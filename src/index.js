@@ -4,6 +4,8 @@ const add = document.getElementById('add');
 const minus = document.getElementById('minus');
 const number = document.querySelector('span');
 
+number.innerText = 0;
+
 const reducer = (count = 0, action) => {
   console.log(count, action);
   if (action.type === "ADD") {
@@ -16,10 +18,20 @@ const reducer = (count = 0, action) => {
 };
 
 const countStore = createStore(reducer);
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "ADD" });
-countStore.dispatch({ type: "MINUS" });
 
-console.log(countStore.getState());
+const onChange= () => {
+  number.innerText = countStore.getState();
+}
+
+countStore.subscribe(onChange);
+
+const handleAdd = () => {
+  countStore.dispatch({ type: "ADD" });
+
+}
+const handleMinus = () => {
+  countStore.dispatch({ type: "MINUS" })
+}
+
+add.addEventListener("click", handleAdd);
+minus.addEventListener("click", handleMinus);
